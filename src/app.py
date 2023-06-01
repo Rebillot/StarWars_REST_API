@@ -51,6 +51,18 @@ def add_user():
     db.session.commit()
     return jsonify(newUser.serialize()), 201
 
+@app.route('/user/<string:user_id>', methods=['PUT'])
+def update_user(user_id):
+    selectUser = User.query.get(user_id)
+    if selectUser is None:
+        abort(404)
+    selectUser.username = request.json['username']
+    db.session.commit()
+    return jsonify(selectUser.serialize())
+
+
+
+
 @app.route('/user/<string:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     selectUser = User.query.get(user_id)
