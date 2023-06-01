@@ -36,13 +36,13 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+
 ################# USERS ###################
 
 @app.route('/user', methods=['GET'])
 def get_users():
     users = User.query.all()
     return jsonify([user.serialize() for user in users])
-
 
 @app.route('/user', methods=['POST'])
 def add_user():
@@ -62,7 +62,6 @@ def update_user(user_id):
     db.session.commit()
     return jsonify(selectUser.serialize())
 
-
 @app.route('/user/<string:user_id>', methods=['DELETE'])
 def delete_user(user_id):
     selectUser = User.query.get(user_id)
@@ -72,13 +71,13 @@ def delete_user(user_id):
     db.session.commit()
     return jsonify({'result': 'Success deleting'})
 
+
 ################# CHARACTERS ###################
 
 @app.route('/character', methods=['GET'])
 def get_characters():
     characters = Character.query.all()
     return jsonify([character.serialize() for character in characters])
-
 
 @app.route('/character', methods=['POST'])
 def add_character():
@@ -89,7 +88,6 @@ def add_character():
     db.session.commit()
     return jsonify(newCharacter.serialize()), 201
 
-
 @app.route('/character/<string:character_id>', methods=['PUT'])
 def update_character(character_id):
     selectCharacter = Character.query.get(character_id)
@@ -98,7 +96,6 @@ def update_character(character_id):
     selectCharacter.name = request.json['name']
     db.session.commit()
     return jsonify(selectCharacter.serialize())
-
 
 @app.route('/character/<string:character_id>', methods=['DELETE'])
 def delete_character(character_id):
@@ -117,7 +114,6 @@ def get_planets():
     planets = Planet.query.all()
     return jsonify([planet.serialize() for planet in planets])
 
-
 @app.route('/planet', methods=['POST'])
 def add_planet():
     data = request.json
@@ -126,7 +122,6 @@ def add_planet():
     db.session.add(newPlanet)
     db.session.commit()
     return jsonify(newPlanet.serialize()), 201
-
 
 @app.route('/planet/<string:planet_id>', methods=['PUT'])
 def update_planet(planet_id):
@@ -137,7 +132,6 @@ def update_planet(planet_id):
     db.session.commit()
     return jsonify(selectPlanet.serialize())
 
-
 @app.route('/planet/<string:planet_id>', methods=['DELETE'])
 def delete_planet(planet_id):
     selectPlanet = Planet.query.get(planet_id)
@@ -147,13 +141,13 @@ def delete_planet(planet_id):
     db.session.commit()
     return jsonify({'result': 'Success deleting'})
 
+
 ################# STARSHIP ###################
 
 @app.route('/starship', methods=['GET'])
 def get_starships():
     starships = Starship.query.all()
     return jsonify([starship.serialize() for starship in starships])
-
 
 @app.route('/starship', methods=['POST'])
 def add_starship():
@@ -164,7 +158,6 @@ def add_starship():
     db.session.commit()
     return jsonify(newStarship.serialize()), 201
 
-
 @app.route('/starship/<string:starship_id>', methods=['PUT'])
 def update_starship(starship_id):
     selectStarship = Starship.query.get(starship_id)
@@ -173,7 +166,6 @@ def update_starship(starship_id):
     selectStarship.name = request.json['name']
     db.session.commit()
     return jsonify(selectStarship.serialize())
-
 
 @app.route('/starship/<string:starship_id>', methods=['DELETE'])
 def delete_starship(starship_id):
