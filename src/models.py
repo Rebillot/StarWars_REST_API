@@ -39,7 +39,7 @@ class Planet(db.Model):
         }
 
 
-class Starships(db.Model):
+class Starship(db.Model):
     __tablename__ = "starship"
 
     id = db.Column(db.Integer, primary_key=True)
