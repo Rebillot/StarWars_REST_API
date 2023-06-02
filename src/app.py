@@ -44,6 +44,13 @@ def get_users():
     users = User.query.all()
     return jsonify([user.serialize() for user in users])
 
+@app.route('/user/<string:user_id>',methods=['GET'])
+def get_single_user(user_id):
+    user = User.query.get(user_id)
+    if user is None:
+        abort (404)
+    return jsonify(user.serialize())    
+
 @app.route('/user', methods=['POST'])
 def add_user():
     data = request.json
@@ -78,6 +85,13 @@ def delete_user(user_id):
 def get_characters():
     characters = Character.query.all()
     return jsonify([character.serialize() for character in characters])
+
+@app.route('/character/<int:character_id>', methods=['GET'])
+def get_single_character(character_id):
+    character = Character.query.get(character_id)
+    if character is None:
+        abort(404)
+    return jsonify(character.serialize())
 
 @app.route('/character', methods=['POST'])
 def add_character():
@@ -114,6 +128,13 @@ def get_planets():
     planets = Planet.query.all()
     return jsonify([planet.serialize() for planet in planets])
 
+@app.route('/planet/<int:planet_id>', methods=['GET'])
+def get_single_planet(planet_id):
+    planet = Planet.query.get(planet_id)
+    if planet is None:
+        abort(404)
+    return jsonify(planet.serialize())
+
 @app.route('/planet', methods=['POST'])
 def add_planet():
     data = request.json
@@ -148,6 +169,13 @@ def delete_planet(planet_id):
 def get_starships():
     starships = Starship.query.all()
     return jsonify([starship.serialize() for starship in starships])
+
+@app.route('/starship/<int:starship_id>', methods=['GET'])
+def get_single_starship(starship_id):
+    starship = Starship.query.get(starship_id)
+    if starship is None:
+        abort(404)
+    return jsonify(starship.serialize())
 
 @app.route('/starship', methods=['POST'])
 def add_starship():
