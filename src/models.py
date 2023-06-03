@@ -1,13 +1,20 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
 
 db = SQLAlchemy()
 
+tabla_ch_favorites= db.Table(
+    "Favorites",
+    db.Column('User_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('Character_id', db.Integer, db.ForeignKey('character.id'))
+)
 
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
- 
+    characters = db.relationship('Character', secondary = tabla_ch_favorites, back_populates='users')
+
     def serialize(self):
         return {"id": self.id, "username": self.username}
 
@@ -15,6 +22,7 @@ class Character(db.Model):
     __tablename__ = "character"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    users = db.relationship('User', secondary = tabla_ch_favorites, back_populates='characters')
 
 
     def serialize(self):
