@@ -215,13 +215,24 @@ def get_favorite_from_user(user_id):
 
     favorites = []
     for character in user.characters:
-        favorites.append(character.serialize())
+        favorites.append({
+            "type": "character",
+            "id": character.id,
+            "name": character.name
+        })
+
+    for planet in user.planets:
+        favorites.append({
+            "type": "planet",
+            "id": planet.id,
+            "name": planet.name
+        })
 
     return jsonify(favorites)
 
 
-@app.route('/user/<string:user_id>/favorites', methods=['POST'])
-def add_favorite_to_user(user_id):
+@app.route('/user/<string:user_id>/favorites/ch', methods=['POST'])
+def add_favorite_ch_to_user(user_id):
     user = User.query.get(user_id)  
     if user is None:
         abort(404) 
@@ -240,7 +251,22 @@ def add_favorite_to_user(user_id):
 
 
 
+@app.route('/user/<string:user_id>/favorites/pl', methods = ['POST'])
+def add_favorite_pl_to_user(user_id):
+    user = User.query.get(user_id)  
+    if user is None:
+        abort(404) 
 
+    data = request.json
+    planet_id = data.get('planet_id')
+
+    planet = Planet.query.get(planet_id)
+    if planet is None:
+        abort(404)
+    user.planets.append(planet)
+    db.session.commit()
+
+    return jsonify(user.serialize())
 
 
 
