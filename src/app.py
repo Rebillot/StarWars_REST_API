@@ -205,6 +205,47 @@ def delete_starship(starship_id):
     return jsonify({'result': 'Success deleting'})
 
 
+################# FAVORITES ##################
+
+@app.route('/user/<string:user_id>/favorites', methods=['GET'])
+def get_favorite_from_user(user_id):
+    user = User.query.get(user_id) 
+    if user is None:
+        abort(404) 
+
+    favorites = []
+    for character in user.characters:
+        favorites.append(character.serialize())
+
+    return jsonify(favorites)
+
+
+@app.route('/user/<string:user_id>/favorites', methods=['POST'])
+def add_favorite_to_user(user_id):
+    user = User.query.get(user_id)  
+    if user is None:
+        abort(404) 
+
+    data = request.json
+    character_id = data.get('character_id')
+
+    character = Character.query.get(character_id)  
+    if character is None:
+        abort(404)  
+
+    user.characters.append(character)
+    db.session.commit()
+
+    return jsonify(user.serialize())
+
+
+
+
+
+
+
+
+
 
 
 
