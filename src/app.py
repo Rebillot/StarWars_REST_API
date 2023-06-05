@@ -228,8 +228,14 @@ def get_favorite_from_user(user_id):
             "name": planet.name
         })
 
-    return jsonify(favorites)
+    for starship in user.starships:
+        favorites.append({
+            "type": "starship",
+            "id": starship.id,
+            "name": starship.name
+        })
 
+    return jsonify(favorites)
 
 @app.route('/user/<string:user_id>/favorites/ch', methods=['POST'])
 def add_favorite_ch_to_user(user_id):
@@ -250,7 +256,6 @@ def add_favorite_ch_to_user(user_id):
     return jsonify(user.serialize())
 
 
-
 @app.route('/user/<string:user_id>/favorites/pl', methods = ['POST'])
 def add_favorite_pl_to_user(user_id):
     user = User.query.get(user_id)  
@@ -264,6 +269,23 @@ def add_favorite_pl_to_user(user_id):
     if planet is None:
         abort(404)
     user.planets.append(planet)
+    db.session.commit()
+
+    return jsonify(user.serialize())
+
+@app.route('/user/<string:user_id>/favorites/ship', methods = ['POST'])
+def add_favorite_ship_to_user(user_id):
+    user = User.query.get(user_id)  
+    if user is None:
+        abort(404) 
+
+    data = request.json
+    starship_id = data.get('starship_id')
+
+    starship = Starship.query.get(starship_id)
+    if starship is None:
+        abort(404)
+    user.starships.append(starship)
     db.session.commit()
 
     return jsonify(user.serialize())

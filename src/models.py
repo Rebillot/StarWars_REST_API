@@ -16,12 +16,22 @@ tabla_Pl_favorites = db.Table(
 )
 
 
+tabla_ship_favorites = db.Table(
+    'ship_favorites',
+    db.Column('User_id', db.Integer, db.ForeignKey('users.id')),
+    db.Column('Starship_id', db.Integer, db.ForeignKey('starship.id'))
+
+)
+
+
+
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     characters = db.relationship('Character', secondary = tabla_ch_favorites, back_populates='users')
     planets = db.relationship('Planet', secondary = tabla_Pl_favorites, back_populates='users')
+    starships = db.relationship('Starship', secondary = tabla_ship_favorites, back_populates='users')
 
     def serialize(self):
         return {"id": self.id, "username": self.username}
@@ -61,6 +71,7 @@ class Starship(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    users = db.relationship('User', secondary = tabla_ship_favorites, back_populates='starships')
 
 
     def serialize(self):
