@@ -292,6 +292,50 @@ def add_favorite_ship_to_user(user_id):
 
 
 
+@app.route('/user/<string:user_id>/favorites/ship/<string:starship_id>', methods=['DELETE'])
+def  delete_starship_favorite(user_id, starship_id):
+    starship = Starship.query.get(starship_id)
+    user = User.query.get(user_id)
+    if user is None:
+        abort (404)
+    if starship is None:
+        abort(404)
+    user.starships.remove(starship)
+    db.session.delete(starship)
+    db.session.commit()
+
+    return jsonify(user.serialize())
+
+@app.route('/user/<string:user_id>/favorites/ch/<string:character_id>', methods=['DELETE'])
+def  delete_character_favorite(user_id, character_id):
+    character = Character.query.get(character_id)
+    user = User.query.get(user_id)
+    if user is None:
+        abort (404)
+    if character is None:
+        abort(404)
+    user.characters.remove(character)
+    db.session.delete(character)
+    db.session.commit()
+
+    return jsonify(user.serialize())
+
+
+@app.route('/user/<string:user_id>/favorites/pl/<string:planet_id>', methods=['DELETE'])
+def  delete_planet_favorite(user_id, planet_id):
+    planet = Planet.query.get(planet_id)
+    user = User.query.get(user_id)
+    if user is None:
+        abort (404)
+    if planet is None:
+        abort(404)
+    user.planets.remove(planet)
+    db.session.delete(planet)
+    db.session.commit()
+
+    return jsonify(user.serialize())
+ 
+
 
 
 
